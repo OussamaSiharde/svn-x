@@ -131,6 +131,7 @@
     <!-- SVN X additions -->
     <notificationGroup id="SVN X" displayType="STICKY_BALLOON"/>
     <postStartupActivity implementation="org.jetbrains.idea.svn.svnx.SvnXStartupGuard"/>
+    <postStartupActivity implementation="org.jetbrains.idea.svn.svnx.SvnXBranchWidgetUpdater"/>
     <statusBarWidgetFactory id="SvnXBranchWidget" implementation="org.jetbrains.idea.svn.svnx.SvnXBranchWidgetFactory"/>
 
     <dependencySupport kind="vcs" coordinate="svn" displayName="Subversion"/>

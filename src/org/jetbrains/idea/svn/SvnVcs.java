@@ -174,27 +174,26 @@ public final class SvnVcs extends AbstractVcs {
    * TODO: formats. And should be removed when 1.6 working copies are no longer supported by IDEA.
    */
   private void cleanup17copies() {
-    Runnable callCleanupWorker = () -> {
+    getSvnFileUrlMappingImpl().scheduleRefresh(() -> ApplicationManager.getApplication().executeOnPooledThread(() -> {
       if (myProject.isDisposed()) return;
-      new CleanupWorker(this, emptyList()) {
-        @Override
-        protected void fillRoots() {
-          for (WCInfo info : getAllWcInfos()) {
-            if (WorkingCopyFormat.ONE_DOT_SEVEN.equals(info.getFormat())) {
-              VirtualFile file = LocalFileSystem.getInstance().refreshAndFindFileByIoFile(info.getRootInfo().getIoFile());
-              if (file == null) {
-                LOG.info("Wasn't able to find virtual file for wc root: " + info.getPath());
-              }
-              else {
-                myRoots.add(file);
-              }
-            }
+
+      // getAllWcInfos runs svn, so it must stay off the EDT
+      List<VirtualFile> roots = new ArrayList<>();
+      for (WCInfo info : getAllWcInfos()) {
+        if (WorkingCopyFormat.ONE_DOT_SEVEN.equals(info.getFormat())) {
+          VirtualFile file = LocalFileSystem.getInstance().refreshAndFindFileByIoFile(info.getRootInfo().getIoFile());
+          if (file == null) {
+            LOG.info("Wasn't able to find virtual file for wc root: " + info.getPath());
+          }
+          else {
+            roots.add(file);
           }
         }
-      }.execute();
-    };
+      }
+      if (roots.isEmpty()) return;
 
-    getSvnFileUrlMappingImpl().scheduleRefresh(() -> ApplicationManager.getApplication().invokeLater(callCleanupWorker));
+      ApplicationManager.getApplication().invokeLater(() -> new CleanupWorker(this, roots).execute(), myProject.getDisposed());
+    }));
   }
 
   public boolean checkCommandLineVersion() {

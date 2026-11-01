@@ -4,10 +4,12 @@
 
 A Subversion plugin for IntelliJ IDEA, for teams that are staying on SVN. It starts from
 JetBrains' open-source svn4idea plugin and builds the workflows Git users take for
-granted, beginning with a branch widget in the status bar.
+granted, starting with branch handling.
 
 **Status: early.** It runs in IntelliJ 2026.1 and is not on the Marketplace yet. See
 [ROADMAP.md](ROADMAP.md).
+
+![SVN X showing a modified file in blue, an added file in green and unversioned files in red](docs/screenshots/file-status.png)
 
 ## Why it exists
 
@@ -15,7 +17,7 @@ Plenty of teams can't move to Git soon: large histories, binary assets, audit ru
 tooling built around SVN. Since IntelliJ IDEA 2026.1, Subversion support is no longer
 bundled and is installed from the Marketplace. The official plugin still works, and SVN X
 doesn't try to replace it for everyone. It focuses on daily comfort for people who live
-in SVN, such as seeing and switching branches without digging through menus.
+in SVN, starting with branches, which are buried in menus today.
 
 ## Architecture
 
@@ -59,17 +61,18 @@ sequenceDiagram
 A verbose status on every call would be slow, so the plugin asks only about the deleted
 directories it finds.
 
-**Green tests, broken plugin.** All 242 tests passed while the real IDE failed on every
+**Green tests, broken plugin.** 242 tests passed while the real IDE failed on every
 `svn info` call. The plugin bundled its own JAXB, the IDE ships another, and Java treated
 them as two different classes. Tests use a flat classpath, so they could not see it.
-Only running the IDE did. The plugin now uses the IDE's copy.
+Only running the IDE did. The plugin now uses the IDE's copy. The same run exposed an
+upstream call that ran `svn` on the UI thread at startup, which now runs in the background.
 
 ## Features
 
 | Today | Next |
 |---|---|
 | Checkout, commit, update, diff, history, merge and conflicts from svn4idea | Revision graph tool window |
-| Branch widget in the status bar | Switch, compare and merge from a branch popup |
+| File status in the project view, on a real IDE run | Branch widget in the status bar (written, not appearing yet) |
 | Warning when the official plugin is also enabled | `svn:mergeinfo` inspector |
 
 ## Quick start
@@ -112,9 +115,9 @@ upstream, which still has to be addressed before a Marketplace release.
 
 ## Known issues
 
+- The branch widget is registered but does not appear in the status bar yet.
 - A file edited inside a renamed directory can show as modified, not moved (the 8 test failures).
-- The IDE may show "Plugin 'SVN X' might be slowing things down". I have not traced this yet.
-- The branch widget and Changes view still need a recorded walkthrough.
+- Commit, history and merge pass their tests but have not been walked through by hand in the IDE.
 
 ## Not affiliated with JetBrains
 This is an independent community fork. "Subversion" plugin code
