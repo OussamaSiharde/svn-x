@@ -9,7 +9,6 @@ granted, starting with branch handling.
 **Status: early.** It runs in IntelliJ 2026.1 and is not on the Marketplace yet. See
 [ROADMAP.md](ROADMAP.md).
 
-![SVN X showing a modified file in blue, an added file in green and unversioned files in red](docs/screenshots/file-status.png)
 
 ## Why it exists
 
