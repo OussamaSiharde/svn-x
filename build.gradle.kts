@@ -42,9 +42,11 @@ dependencies {
 
     // Libs svn4idea needs that are NOT bundled with the platform
     // (guava, fastutil, httpclient ARE bundled -> nothing to add for those)
-    implementation("javax.xml.bind:jaxb-api:2.3.1")          // parses `svn --xml` output
-    implementation("javax.activation:javax.activation-api:1.2.0")
-    runtimeOnly("org.glassfish.jaxb:jaxb-runtime:2.3.9")
+    // The IDE ships JAXB; a second copy in the plugin breaks JAXBContext with a ClassCastException
+    compileOnly("javax.xml.bind:jaxb-api:2.3.1")             // parses `svn --xml` output
+    compileOnly("javax.activation:javax.activation-api:1.2.0")
+    testRuntimeOnly("javax.xml.bind:jaxb-api:2.3.1")
+    testRuntimeOnly("org.glassfish.jaxb:jaxb-runtime:2.3.9")
     implementation("org.jetbrains.intellij.deps:ini4j:0.5.5-2")                  // reads ~/.subversion/config
     implementation("oro:oro:2.0.8")
 

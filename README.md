@@ -1,37 +1,76 @@
 # SVN X
 
-**Git-level comfort for teams that are staying on Subversion.**
+![CI](https://github.com/OussamaSiharde/svn-x/actions/workflows/build.yml/badge.svg)
 
-SVN X is a standalone fork of IntelliJ's open-source Subversion plugin (svn4idea),
-extracted from [JetBrains/intellij-community](https://github.com/JetBrains/intellij-community)
-(Apache 2.0). It keeps full SVN support in the IDE and builds on it with the
-workflows Git users take for granted, starting with a branch widget in the status bar.
+A Subversion plugin for IntelliJ IDEA, for teams that are staying on SVN. It starts from
+JetBrains' open-source svn4idea plugin and builds the workflows Git users take for
+granted, beginning with a branch widget in the status bar.
 
-![How SVN X is built](docs/architecture.svg)
+**Status: early.** It runs in IntelliJ 2026.1 and is not on the Marketplace yet. See
+[ROADMAP.md](ROADMAP.md).
 
-**Status: early.** Phase 0 is done, the first SVN X feature is in, and it is not on
-the Marketplace yet. See [ROADMAP.md](ROADMAP.md).
+## Why it exists
+
+Plenty of teams can't move to Git soon: large histories, binary assets, audit rules, or
+tooling built around SVN. Since IntelliJ IDEA 2026.1, Subversion support is no longer
+bundled and is installed from the Marketplace. The official plugin still works, and SVN X
+doesn't try to replace it for everyone. It focuses on daily comfort for people who live
+in SVN, such as seeing and switching branches without digging through menus.
+
+## Architecture
+
+```mermaid
+flowchart LR
+    subgraph IDE["IntelliJ IDEA"]
+        VCS["VCS platform<br/>changes, history, diff"]
+        Bar["Status bar"]
+    end
+    subgraph Plugin["SVN X"]
+        Core["svn4idea core<br/>Apache 2.0"]
+        Widget["Branch widget"]
+        Guard["Startup guard<br/>conflict with official plugin"]
+    end
+    Core <--> VCS
+    Widget --> Bar
+    Widget --> Core
+    Core -->|"svn --xml"| CLI["svn client"]
+    CLI --> Repo[("Repository")]
+```
+
+The plugin drives your own `svn` client and parses its XML output, so it behaves the
+same as the command line you already use.
+
+## Two bugs worth reading about
+
+**svn 1.15 hides files.** Plain `svn status` no longer lists the children of a deleted
+directory, so files inside a deleted or moved folder disappeared from the Changes view.
+
+```mermaid
+sequenceDiagram
+    participant P as SVN X
+    participant S as svn 1.15
+    P->>S: status --xml
+    S-->>P: D child (children not listed)
+    P->>S: status --verbose child
+    S-->>P: D child/a.txt
+    Note over P: Changes view is complete again
+```
+
+A verbose status on every call would be slow, so the plugin asks only about the deleted
+directories it finds.
+
+**Green tests, broken plugin.** All 242 tests passed while the real IDE failed on every
+`svn info` call. The plugin bundled its own JAXB, the IDE ships another, and Java treated
+them as two different classes. Tests use a flat classpath, so they could not see it.
+Only running the IDE did. The plugin now uses the IDE's copy.
 
 ## Features
 
 | Today | Next |
 |---|---|
-| Everything in svn4idea: checkout, commit, update, diff, history, merge, conflicts | Revision graph tool window |
-| Branch widget in the status bar | Branch popup with switch, compare and merge |
+| Checkout, commit, update, diff, history, merge and conflicts from svn4idea | Revision graph tool window |
+| Branch widget in the status bar | Switch, compare and merge from a branch popup |
 | Warning when the official plugin is also enabled | `svn:mergeinfo` inspector |
-| Compatible with IntelliJ 2026.1 and 2026.2 (Plugin Verifier) | Commit UX and large working copy performance |
-
-## What's in here
-- `src/`, `gen/`, `resources/`, `testSource/`, `testData/` — svn4idea sources
-  from intellij-community tag `idea/261.22158.277` (IntelliJ IDEA 2026.1, the
-  build this targets), plus the SVN X additions in `src/.../svn/svnx/` and the
-  renamed `plugin.xml` (layout preserved; Gradle maps to it directly).
-  To move to a newer IDE: re-copy `plugins/svn4idea` from the matching tag and
-  re-apply those two changes.
-- `build.gradle.kts` — standalone build via IntelliJ Platform Gradle Plugin 2.x
-- `RENAME-CHECKLIST.md` — how the fork was detached from the JetBrains plugin
-- `ROADMAP.md` — the plan
-- `LICENSE.txt` / `NOTICE.txt` — carried over from intellij-community (required)
 
 ## Quick start
 ```bash
@@ -49,7 +88,7 @@ Subversion plugin first: both register as `svn`, and SVN X warns you if both are
 client. Run one class at a time with `--tests` if you want results quickly; the
 full suite takes about 30 minutes.
 
-Latest run on svn 1.15, class by class:
+Latest full run on svn 1.15, class by class, before the JAXB fix:
 
 | Result | Tests |
 |---|---|
@@ -70,6 +109,12 @@ children of deleted directories. The status client now asks for them separately.
 Plugin Verifier reports Compatible for IntelliJ IDEA 2026.1 (261.27258) and 2026.2
 (262.11879). It also flags internal and override-only API usage inherited from
 upstream, which still has to be addressed before a Marketplace release.
+
+## Known issues
+
+- A file edited inside a renamed directory can show as modified, not moved (the 8 test failures).
+- The IDE may show "Plugin 'SVN X' might be slowing things down". I have not traced this yet.
+- The branch widget and Changes view still need a recorded walkthrough.
 
 ## Not affiliated with JetBrains
 This is an independent community fork. "Subversion" plugin code

@@ -8,13 +8,17 @@ import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.actionSystem.DefaultActionGroup
 import com.intellij.openapi.actionSystem.Separator
 import com.intellij.openapi.actionSystem.impl.SimpleDataContext
+import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.startup.ProjectActivity
 import com.intellij.openapi.ui.popup.JBPopup
 import com.intellij.openapi.ui.popup.JBPopupFactory
 import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.wm.StatusBar
 import com.intellij.openapi.wm.StatusBarWidget
 import com.intellij.openapi.wm.StatusBarWidgetFactory
+import com.intellij.openapi.wm.impl.status.widget.StatusBarWidgetsManager
 import com.intellij.util.Consumer
 import org.jetbrains.idea.svn.RootUrlInfo
 import org.jetbrains.idea.svn.SvnVcs
@@ -45,6 +49,19 @@ internal class SvnXBranchWidgetFactory : StatusBarWidgetFactory {
   override fun disposeWidget(widget: StatusBarWidget) = Disposer.dispose(widget)
 
   override fun canBeEnabledOn(statusBar: StatusBar): Boolean = true
+}
+
+/** SVN roots load after the status bar is built, so availability has to be checked again then. */
+internal class SvnXBranchWidgetUpdater : ProjectActivity {
+  override suspend fun execute(project: Project) {
+    val refresh = {
+      ApplicationManager.getApplication().invokeLater({
+        project.service<StatusBarWidgetsManager>().updateWidget(SvnXBranchWidgetFactory::class.java)
+      }, project.disposed)
+    }
+    project.messageBus.connect().subscribe(SvnVcs.ROOTS_RELOADED, Consumer<Boolean> { refresh() })
+    refresh()
+  }
 }
 
 internal class SvnXBranchWidget(private val project: Project)
