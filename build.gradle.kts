@@ -3,7 +3,7 @@ import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 plugins {
     id("java")
     id("org.jetbrains.kotlin.jvm") version "2.3.0"
-    id("org.jetbrains.intellij.platform") version "2.18.0" // check for latest 2.x
+    id("org.jetbrains.intellij.platform") version "2.18.0"
 }
 
 group = "io.github.oussamasiharde.svnx"
@@ -79,7 +79,7 @@ intellijPlatform {
 
     pluginConfiguration {
         // These values are patched INTO plugin.xml at build time,
-        // overriding the original JetBrains id/name. See RENAME-CHECKLIST.md.
+        // overriding the original JetBrains id/name.
         id = "io.github.oussamasiharde.svnx"   // FINAL id — immutable after first Marketplace publish!
         name = "SVN X"            // TODO: your plugin name (must not imply JetBrains endorsement)
         version = project.version.toString()

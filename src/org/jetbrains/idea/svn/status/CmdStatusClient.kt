@@ -1,4 +1,5 @@
 // Copyright 2000-2021 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
+// Modified by Oussama Siharde for SVN X, 2026.
 package org.jetbrains.idea.svn.status
 
 import com.intellij.openapi.diagnostic.logger
@@ -130,7 +131,7 @@ class CmdStatusClient : BaseSvnClient(), StatusClient {
     val command = execute(myVcs, Target.on(path), SvnCommandName.st, parameters, null)
     parseResult(path, base, infoBase, command, collector)
 
-    // svn 1.15 omits the children of deleted directories unless --verbose is passed
+    // Modern svn clients (verified on 1.14.3 and 1.15) omit the children of deleted directories unless --verbose is passed
     for (dir in deletedDirs) {
       doStatus(dir, Depth.INFINITY, remote, true, includeIgnored, collectParentExternals, StatusConsumer { status ->
         if (status.file != dir) handler.consume(status)

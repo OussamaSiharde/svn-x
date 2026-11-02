@@ -43,13 +43,13 @@ same as the command line you already use.
 
 ## Two bugs worth reading about
 
-**svn 1.15 hides files.** Plain `svn status` no longer lists the children of a deleted
-directory, so files inside a deleted or moved folder disappeared from the Changes view.
+**Modern svn clients hide files.** On modern clients (verified on 1.14.3 and 1.15), plain
+`svn status` does not list the children of a deleted directory, so files inside a deleted or moved folder disappeared from the Changes view.
 
 ```mermaid
 sequenceDiagram
     participant P as SVN X
-    participant S as svn 1.15
+    participant S as modern svn client
     P->>S: status --xml
     S-->>P: D child (children not listed)
     P->>S: status --verbose child
@@ -103,8 +103,8 @@ can show as modified rather than moved in the Changes view. See `SvnRollbackTest
 `SvnRenameTest.testRenameFileRenameDir` and
 `SvnChangesCorrectlyRefreshedTest.testMoveDirEditFileAndAfterRevert`.
 
-SVN X also fixes a problem with svn 1.15, whose plain `status` command hides the
-children of deleted directories. The status client now asks for them separately.
+SVN X also fixes a problem with modern svn clients (verified on 1.14.3 and 1.15), whose
+plain `status` command hides the children of deleted directories. The status client now asks for them separately.
 
 ## Compatibility
 

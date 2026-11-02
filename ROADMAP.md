@@ -7,7 +7,6 @@ extracted from the intellij-community monorepo into this standalone Gradle build
 ## Phase 0 — Extraction (make it build & run)
 **Milestone: `./gradlew runIde` opens a sandbox IDE where checkout, commit,
 update, diff and history all work against a scratch repo.**
-- Apply RENAME-CHECKLIST.md
 - Fix whatever doesn't compile against IC 2026.1 outside the monorepo
   (expect a handful of internal-API rough edges, not hundreds)
 - Tests wired: `./gradlew test` runs the upstream suite against a real svn client
@@ -15,7 +14,9 @@ update, diff and history all work against a scratch repo.**
 ## Phase 1 — Parity release
 **Milestone: v0.x live on JetBrains Marketplace.**
 - `verifyPlugin` clean enough, `signPlugin`, `publishPlugin`
-- Marketplace listing: screenshots, "disable the bundled Subversion plugin" warning
+- Marketplace listing: screenshots, and "disable the official Subversion plugin" as the
+  first line of the description
+- Verify the copyright headers
 - CI: GitHub Actions running build + verifier on push
 - Value already: SVN is now an optional install, so the UX gap with Git is the story
 

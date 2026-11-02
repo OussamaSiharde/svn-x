@@ -1,4 +1,5 @@
 // Copyright 2000-2025 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
+// Modified by Oussama Siharde for SVN X, 2026.
 package org.jetbrains.idea.svn;
 
 import com.intellij.application.Topics;

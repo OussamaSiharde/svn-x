@@ -1,4 +1,5 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
+// Modified by Oussama Siharde for SVN X, 2026.
 package org.jetbrains.idea.svn;
 
 import com.intellij.execution.process.ProcessOutput;
@@ -486,7 +487,7 @@ public abstract class SvnTestCase extends AbstractJunitVcsTestCase {
     runStatusAcrossLocks(myWcRoot, false, map2Array(stdoutLines, String.class, it -> toSystemDependentName(it)));
   }
 
-  // svn 1.15 no longer lists the children of a deleted directory in plain `svn status`
+  // Modern svn clients (verified on 1.14.3 and 1.15) do not list the children of a deleted directory in plain `svn status`
   private static String[] dropHiddenDeletedChildren(String[] expected, List<String> actual) {
     List<String> result = new ArrayList<>();
     for (String line : expected) {

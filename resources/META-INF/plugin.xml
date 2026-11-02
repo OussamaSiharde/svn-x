@@ -1,4 +1,5 @@
 <idea-plugin>
+  <!-- Modified by Oussama Siharde for SVN X, 2026. -->
   <!-- TODO: final id/name; both are also patched at build time from build.gradle.kts -->
   <name>SVN X</name>
   <id>io.github.oussamasiharde.svnx</id>
