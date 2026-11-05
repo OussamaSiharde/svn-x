@@ -1,6 +1,5 @@
 <idea-plugin>
   <!-- Modified by Oussama Siharde for SVN X, 2026. -->
-  <!-- TODO: final id/name; both are also patched at build time from build.gradle.kts -->
   <name>SVN X</name>
   <id>io.github.oussamasiharde.svnx</id>
   <category>Version Controls</category>
@@ -12,7 +11,7 @@
       <b>Disable the bundled/marketplace “Subversion” plugin before use.</b>
       ]]>
   </description>
-  <vendor>Oussama</vendor> <!-- TODO: also set vendor in build.gradle.kts -->
+  <vendor>Oussama Siharde</vendor>
   <resource-bundle>messages.SvnBundle</resource-bundle>
 
   <dependencies>

@@ -17,6 +17,7 @@ update, diff and history all work against a scratch repo.**
 - Marketplace listing: screenshots, and "disable the official Subversion plugin" as the
   first line of the description
 - Verify the copyright headers
+- Marketplace naming rule: the name must not suggest an official JetBrains product
 - CI: GitHub Actions running build + verifier on push
 - Value already: SVN is now an optional install, so the UX gap with Git is the story
 

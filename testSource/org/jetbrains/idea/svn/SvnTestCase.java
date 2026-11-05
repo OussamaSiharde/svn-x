@@ -487,7 +487,7 @@ public abstract class SvnTestCase extends AbstractJunitVcsTestCase {
     runStatusAcrossLocks(myWcRoot, false, map2Array(stdoutLines, String.class, it -> toSystemDependentName(it)));
   }
 
-  // Modern svn clients (verified on 1.14.3 and 1.15) do not list the children of a deleted directory in plain `svn status`
+  // Plain `svn status` lists only the root of a deleted directory, not its children
   private static String[] dropHiddenDeletedChildren(String[] expected, List<String> actual) {
     List<String> result = new ArrayList<>();
     for (String line : expected) {

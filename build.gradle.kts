@@ -50,9 +50,6 @@ dependencies {
     implementation("org.jetbrains.intellij.deps:ini4j:0.5.5-2")                  // reads ~/.subversion/config
     implementation("oro:oro:2.0.8")
 
-    // Uncomment if you hit ClassNotFoundException on sqlite at runtime:
-    // runtimeOnly("org.xerial:sqlite-jdbc:3.46.1.3")
-
     testImplementation("junit:junit:4.13.2")
     testImplementation(kotlin("test"))
     testImplementation("org.hamcrest:hamcrest:2.2")
@@ -78,14 +75,13 @@ intellijPlatform {
     instrumentCode = false
 
     pluginConfiguration {
-        // These values are patched INTO plugin.xml at build time,
-        // overriding the original JetBrains id/name.
-        id = "io.github.oussamasiharde.svnx"   // FINAL id — immutable after first Marketplace publish!
-        name = "SVN X"            // TODO: your plugin name (must not imply JetBrains endorsement)
+        // These values are patched into plugin.xml at build time.
+        id = "io.github.oussamasiharde.svnx"   // immutable after the first Marketplace publish
+        name = "SVN X"
         version = project.version.toString()
 
         vendor {
-            name = "Oussama"      // TODO
+            name = "Oussama Siharde"
             email = "oussama@siharde.com"
         }
 
