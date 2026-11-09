@@ -70,9 +70,10 @@ upstream call that ran `svn` on the UI thread at startup, which now runs in the 
 
 | Today | Next |
 |---|---|
-| Checkout, commit, update, diff, history, merge and conflicts from svn4idea | Revision graph tool window |
-| File status in the project view, on a real IDE run | Branch widget in the status bar (written, not appearing yet) |
-| Warning when the official plugin is also enabled | `svn:mergeinfo` inspector |
+| Checkout, commit, update, diff, history, merge and conflicts from svn4idea | Branch popup: list branches and tags, switch in one click |
+| File status in the project view, on a real IDE run | Revision graph tool window |
+| `svn: <branch>` in the status bar, with a popup of branch actions | `svn:mergeinfo` inspector |
+| Warning when the official plugin is also enabled | |
 
 ## Quick start
 ```bash
@@ -90,11 +91,11 @@ Subversion plugin first: both register as `svn`, and SVN X warns you if both are
 client. Run one class at a time with `--tests` if you want results quickly; the
 full suite takes about 30 minutes.
 
-Latest full run on svn 1.15, class by class, before the JAXB fix:
+Latest full run, 9 Nov 2026, svn 1.15.0 on macOS:
 
 | Result | Tests |
 |---|---|
-| Passed | 242 |
+| Passed | 245 |
 | Skipped | 18 |
 | Failed | 8 |
 
@@ -115,7 +116,7 @@ upstream, which still has to be addressed before a Marketplace release.
 
 ## Known issues
 
-- The branch widget is registered but does not appear in the status bar yet.
+- The branch popup groups existing actions; it doesn't list branches yet.
 - A file edited inside a renamed directory can show as modified, not moved (the 8 test failures).
 - Commit, history and merge pass their tests but have not been walked through by hand in the IDE.
 

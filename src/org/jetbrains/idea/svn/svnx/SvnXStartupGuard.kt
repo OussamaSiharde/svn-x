@@ -26,7 +26,7 @@ internal class SvnXStartupGuard : ProjectActivity {
       .getNotificationGroup("SVN X")
       .createNotification(
         "Conflicting Subversion plugins",
-        "SVN X replaces the bundled Subversion plugin. Both are enabled, " +
+        "SVN X replaces the official Subversion plugin. Both are enabled, " +
         "which will break SVN integration. Please disable \u201cSubversion\u201d in plugin settings.",
         NotificationType.WARNING
       )

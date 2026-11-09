@@ -5,10 +5,10 @@
   <category>Version Controls</category>
   <description>
     <![CDATA[
-      Subversion integration with Git-level UX: branch widget, interactive history and merge tooling.<br/>
-      Independent community fork of the open-source svn4idea plugin (Apache 2.0) — not affiliated with JetBrains.<br/>
-      Supports Subversion 1.7+. Requires a command line svn client.<br/>
-      <b>Disable the bundled/marketplace “Subversion” plugin before use.</b>
+      <b>Disable the official “Subversion” plugin before use.</b><br/>
+      Early release: the svn4idea features (checkout, commit, update, diff, history, merge) plus fixes, and the current branch in the status bar.<br/>
+      Independent community fork of the open-source svn4idea plugin (Apache 2.0), not affiliated with JetBrains.<br/>
+      Requires a command line svn client.
       ]]>
   </description>
   <vendor>Oussama Siharde</vendor>
