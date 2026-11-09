@@ -49,6 +49,8 @@ dependencies {
     testRuntimeOnly("org.glassfish.jaxb:jaxb-runtime:2.3.9")
     implementation("org.jetbrains.intellij.deps:ini4j:0.5.5-2")                  // reads ~/.subversion/config
     implementation("oro:oro:2.0.8")
+    // Reads the working copy format from wc.db; the IDE no longer ships the driver. slf4j comes from the IDE.
+    implementation("org.xerial:sqlite-jdbc:3.46.1.3") { exclude(group = "org.slf4j") }
 
     testImplementation("junit:junit:4.13.2")
     testImplementation(kotlin("test"))

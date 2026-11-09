@@ -5,7 +5,7 @@
   <category>Version Controls</category>
   <description>
     <![CDATA[
-      <b>Disable the official “Subversion” plugin before use.</b><br/>
+      <b>Disable the official Subversion plugin before use.</b><br/>
       Early release: the svn4idea features (checkout, commit, update, diff, history, merge) plus fixes, and the current branch in the status bar.<br/>
       Independent community fork of the open-source svn4idea plugin (Apache 2.0), not affiliated with JetBrains.<br/>
       Requires a command line svn client.

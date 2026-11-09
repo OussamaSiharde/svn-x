@@ -6,9 +6,8 @@ A Subversion plugin for IntelliJ IDEA, for teams that are staying on SVN. It sta
 JetBrains' open-source svn4idea plugin and builds the workflows Git users take for
 granted, starting with branch handling.
 
-**Status: early.** It runs in IntelliJ 2026.1 and is not on the Marketplace yet. See
-[ROADMAP.md](ROADMAP.md).
-
+**Status: early.** It runs in IntelliJ IDEA 2026.1 and is not on the Marketplace yet. See
+[ROADMAP.md](ROADMAP.md) for what comes next.
 
 ## Why it exists
 
@@ -75,15 +74,24 @@ upstream call that ran `svn` on the UI thread at startup, which now runs in the 
 | `svn: <branch>` in the status bar, with a popup of branch actions | `svn:mergeinfo` inspector |
 | Warning when the official plugin is also enabled | |
 
-## Quick start
+## Install
+
+1. Disable the official Subversion plugin. Both register as `svn`, and SVN X warns you
+   if both are enabled.
+2. Make sure an `svn` command line client is on your PATH.
+3. Build the zip (needs JDK 25): `./gradlew buildPlugin` writes `build/distributions/svnx-0.1.0.zip`.
+4. In IntelliJ IDEA: Settings > Plugins > gear icon > Install Plugin from Disk, pick the
+   zip, and restart.
+
+## Build from source
+
 ```bash
 ./gradlew runIde        # sandbox IDE with the plugin
 ./gradlew test          # upstream test suite against your svn client
-./gradlew buildPlugin   # build/distributions/*.zip, install from disk
+./gradlew buildPlugin   # plugin zip in build/distributions
 ```
 
-Requires JDK 25 and an `svn` command line client on your PATH. Disable the official
-Subversion plugin first: both register as `svn`, and SVN X warns you if both are on.
+Pull requests are welcome: see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Tests
 
@@ -104,10 +112,6 @@ can show as modified rather than moved in the Changes view. See `SvnRollbackTest
 `SvnRenameTest.testRenameFileRenameDir` and
 `SvnChangesCorrectlyRefreshedTest.testMoveDirEditFileAndAfterRevert`.
 
-SVN X also completes the Changes view for deleted directories: plain `svn status` lists
-only their root, so the status client asks `svn status --verbose` for each deleted
-directory it finds.
-
 ## Compatibility
 
 Plugin Verifier reports Compatible for IntelliJ IDEA 2026.1 (261.27258) and 2026.2
@@ -119,6 +123,8 @@ upstream, which still has to be addressed before a Marketplace release.
 - The branch popup groups existing actions; it doesn't list branches yet.
 - A file edited inside a renamed directory can show as modified, not moved (the 8 test failures).
 - Commit, history and merge pass their tests but have not been walked through by hand in the IDE.
+- Creating a file in a working copy runs `svn info` on the UI thread (upstream code); the IDE logs it.
+- Only the first working copy of a project is shown in the status bar.
 
 ## Not affiliated with JetBrains
 This is an independent community fork. "Subversion" plugin code
